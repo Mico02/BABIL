@@ -1,0 +1,10 @@
+# Mac
+.DS_Store
+.DocumentRevisions-V100
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+
+# Git
