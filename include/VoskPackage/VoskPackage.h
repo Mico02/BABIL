@@ -73,9 +73,7 @@ class VoskBatchModelClass{
     VoskBatchModelClass(std::string model_path);
     ~VoskBatchModelClass();
     //Instance methods
-    void wait(){
-        vosk_batch_model_wait(this->batchModel);
-    }    
+    void wait();  
 };
 
 class VoskBatchRecognizerClass{
@@ -94,4 +92,5 @@ class VoskBatchRecognizerClass{
 };
 
 }
+
 #endif

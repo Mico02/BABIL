@@ -9,3 +9,6 @@ Thumbs.db
 
 #Directories
 /.vscode
+
+#Object files
+.o
