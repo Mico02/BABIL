@@ -1,3 +1,6 @@
+#ifndef VOSKPACKAGE_H
+#define VOSKPACKAGE_H
+
 #include <vosk_api.h>
 #include <string>
 
@@ -91,59 +94,4 @@ class VoskBatchRecognizerClass{
 };
 
 }
-
-/*
-class VoskBatchModelClass{
-    friend class VoskBatchRecognizerClass;
-    private:
-        VoskBatchModel * batchModel;
-    public:
-    VoskBatchModelClass(const char * model_path){
-        vosk_batch_model_new(model_path);
-    }
-    VoskBatchModelClass(std::string model_path){
-        vosk_batch_model_new(model_path.c_str());
-    }
-    ~VoskBatchModelClass(){
-        vosk_batch_model_free(this->batchModel);
-    }
-    //Instance methods
-    void wait(){
-        vosk_batch_model_wait(this->batchModel);
-    }    
-};
-*/
-/*
-class VoskBatchRecognizerClass{
-    private:
-    VoskBatchRecognizer * batchRecognizer;
-    public:
-    VoskBatchRecognizerClass(VoskBatchModelClass batchRecognizer, float sampleRate){
-        vosk_batch_recognizer_new(batchRecognizer.batchModel, sampleRate);
-    }
-    ~VoskBatchRecognizerClass(){
-        vosk_batch_recognizer_free(this->batchRecognizer);
-    }
-
-    //Instance methods
-    void acceptWaveform(const char * data, int length){
-        vosk_batch_recognizer_accept_waveform(this->batchRecognizer,data, length);
-    }
-
-    void setNLSML(bool nlsml){
-        vosk_batch_recognizer_set_nlsml(this->batchRecognizer, (int)nlsml);
-    }
-
-    void finishStream(){
-        vosk_batch_recognizer_finish_stream(this->batchRecognizer);
-    }
-
-    void frontResult(){
-        vosk_batch_recognizer_front_result(this->batchRecognizer);
-    }
-
-    void pop(){
-        vosk_batch_recognizer_pop(this->batchRecognizer);
-    }
-};
-*/
+#endif
