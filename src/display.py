@@ -43,7 +43,9 @@ class OLEDDisplay:
         self.__draw.text((40,20), word, font=self.__font, fill=0)
         self.__image = self.__image.rotate(180)
         self.__display.ShowImage(self.__display.getbuffer(self.__image))
-
+    
+    def clear(self, display):
+        self.__display.clear()
 
     def changeFontSize(self, font_size):
         ''' 
