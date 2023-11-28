@@ -2,6 +2,7 @@ import sounddevice
 import sys
 import queue
 import json
+import time
 from libretranslatepy import LibreTranslateAPI
 from vosk import Model, KaldiRecognizer
 from display import OLEDDisplay
@@ -39,21 +40,29 @@ recognizer = KaldiRecognizer(model, sample_rate)
 display = OLEDDisplay(font_size = 15)
 
 #Initializing translator API
-#translator = LibreTranslateAPI("https://translate.argosopentech.com/")
+translator = LibreTranslateAPI("https://translate.argosopentech.com/")
 
 #print(audio_input)
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
      print("############## START ############## ")
+     num_word_to_display = 0
      while True:
         data = q.get()
         if recognizer.AcceptWaveform(data):
             final_result = json.loads(recognizer.FinalResult())
-            #ranslated = translator.translate(partial_result.get("partial", ""), from_code, to_code)
             print(final_result)
         else: 
             partial_result = json.loads(recognizer.PartialResult())
-            if len(partial_result.get("partial")) > 0:
-                words = partial_result.get("partial").split(' ')
+            words = partial_result.get("partial").split(" ") 
+            
+            
+            
+            if len(words) > 0:    
+                if len(words) > 1:
+                    if words[-2] != words[-1]:
+                        display.displayWord(words[-1])
                 display.displayWord(words[-1])
                 print(words[-1])
+                print(words)
+            
                
