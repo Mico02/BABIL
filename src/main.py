@@ -4,6 +4,9 @@ import queue
 import json
 from libretranslatepy import LibreTranslateAPI
 from vosk import Model, KaldiRecognizer
+from display import OLEDDisplay
+
+
 q=queue.Queue()
 def callback(indata, frames, time, status):
     """This is called (from a separate thread) for each audio block."""
@@ -32,8 +35,11 @@ model = Model(lang=from_code)
 #Initalizing vosk recognizer
 recognizer = KaldiRecognizer(model, sample_rate)
 
+#Initializing the display 
+display = OLEDDisplay(font_size = 15)
+
 #Initializing translator API
-translator = LibreTranslateAPI("https://translate.argosopentech.com/")
+#translator = LibreTranslateAPI("https://translate.argosopentech.com/")
 
 #print(audio_input)
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
@@ -41,14 +47,13 @@ with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dty
      while True:
         data = q.get()
         if recognizer.AcceptWaveform(data):
-            final = recognizer.FinalResult()
-            translated = translator.translate(partial_result.get("partial", ""), from_code, to_code)
-            print(translated)
+            final_result = json.loads(recognizer.FinalResult())
+            #ranslated = translator.translate(partial_result.get("partial", ""), from_code, to_code)
+            print(final_result)
         else: 
             partial_result = json.loads(recognizer.PartialResult())
             if len(partial_result.get("partial")) > 0:
-                #print(partial_result)
-                translatedText = translator.translate(partial_result.get("partial", ""), from_code, to_code)
-                print(translatedText)
-                #translated = translator.translate("je te deteste", "fr", "en")
-                #print(translated)
+                words = partial_result.get("partial").split(' ')
+                display.displayWord(words[-1])
+                print(words[-1])
+               
