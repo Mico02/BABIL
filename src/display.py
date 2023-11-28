@@ -9,25 +9,50 @@ from waveshare_OLED import config
 from waveshare_OLED import OLED_1in51
 from PIL import Image,ImageDraw,ImageFont
 
-#Setting the device to work using SPI
-config.Device_SPI = 1
-config.Device_I2C = 0
+class OLEDDisplay:
+    __display = None #object for display
+    __image = None #object for image on the display
+    __draw = None #object for drawing on the image
+    __font = None #object that stores the text font
+    def __init__(self, font_size = 14):
+        ''' 
+        Intializes the diplay and other parameters for display to function, font size is 14 by default
+        
+        Args:
+            font_size  (int): font size 
+        '''
+        #Setting the device to work using SPI
+        config.Device_SPI = 1
+        config.Device_I2C = 0
+
+        #Intializes the diplay, image, drawing object, and font
+        self.__display = OLED_1in51.OLED_1in51()
+        self.__display.Init()
+        self.__display.clear()
+        self.__font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), font_size)
+
+    def displayWord(self, word):
+        '''
+        Displays the give word onto the OLED display
+
+        Args:
+            word (str): the word to be displayed
+        '''
+        self.__image = Image.new('1',(self.__display.width, self.__display.height), "WHITE")
+        self.__draw = ImageDraw.Draw(self.__image)
+        self.__draw.text((40,20), word, font=self.__font, fill=0)
+        self.__image = self.__image.rotate(180)
+        self.__display.ShowImage(self.__display.getbuffer(self.__image))
 
 
-display = None #Global object that serves as the object for display
-
-
-def initDisplay(font_size = 14):
-    ''' 
-    Intializes the diplay and other parameters for display to function
+    def changeFontSize(self, font_size):
+        ''' 
+        Changes the current font size of the display text
     
-    Args:
-        font_size  (int): font size 
-    '''
-    display = OLED_1in51.OLED_1in51()
-    display.Init()
-    display.clear()
-    image = 
+        Args:
+            font_size  (int): font size 
+        '''
+        self.__font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), font_size)
 
-def displayWord(word):
 
+    
