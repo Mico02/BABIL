@@ -33,7 +33,7 @@ model = Model(lang=from_code)
 recognizer = KaldiRecognizer(model, sample_rate)
 
 #Initializing translator API
-translator = LibreTranslateAPI("http://127.0.0.1:5000")
+translator = LibreTranslateAPI("https://translate.argosopentech.com/")
 
 #print(audio_input)
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
