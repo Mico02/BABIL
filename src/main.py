@@ -42,27 +42,23 @@ display = OLEDDisplay(font_size = 15)
 #Initializing translator API
 translator = LibreTranslateAPI("https://translate.argosopentech.com/")
 
+
+previous_num_of_word = 0
 #print(audio_input)
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
      print("############## START ############## ")
-     num_word_to_display = 0
      while True:
         data = q.get()
         if recognizer.AcceptWaveform(data):
+            previous_num_of_word = 0
             final_result = json.loads(recognizer.FinalResult())
             print(final_result)
         else: 
             partial_result = json.loads(recognizer.PartialResult())
             words = partial_result.get("partial").split(" ") 
-            
-            
-            
-            if len(words) > 0:    
-                if len(words) > 1:
-                    if words[-2] != words[-1]:
-                        display.displayWord(words[-1])
-                display.displayWord(words[-1])
-                print(words[-1])
-                print(words)
+            previous_num_of_word += len(words)
+            num_of_words_to_dispay = len(words) - previous_num_of_word
+            for i in range(num_of_words_to_dispay):
+                display.displayWord(words[i])
             
                
