@@ -43,6 +43,11 @@ class OLEDDisplay:
         self.__draw.text((40,20), word, font=self.__font, fill=0)
         self.__image = self.__image.rotate(180)
         self.__display.ShowImage(self.__display.getbuffer(self.__image))
+
+    def displayWords(self, words: list):
+        for word in words:
+            self.displayWord(word)
+            time.sleep(0.1)
     
     def clear(self, display):
         self.__display.clear()
