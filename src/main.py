@@ -4,7 +4,7 @@ import queue
 import json
 import time
 import threading
-#from libretranslatepy import LibreTranslateAPI
+from libretranslatepy import LibreTranslateAPI
 from vosk import Model, KaldiRecognizer
 from display import OLEDDisplay
 from googletrans import Translator
@@ -23,6 +23,7 @@ def callback(indata, frames, time, status):
 from_code = sys.argv[1]
 to_code = sys.argv[2]
 
+
 #Getting microphone info
 device = None
 audio_input = sounddevice.query_devices(device, kind="input")
@@ -32,9 +33,11 @@ sample_rate = audio_input["default_samplerate"]
 BLOCK_SIZE = 10000
 CHANNELS = 1
 
-path = r"/Users/mohamedhussein/Documents/Capstone/VoskModels/vosk-model-small-en-us-0.15"
 #Initalizing vosk model
-model = Model(path)
+model = Model(lang=from_code)
+
+#Initializing the display 
+display = OLEDDisplay(font_size = 15)
 
 #Initalizing vosk recognizer
 recognizer = KaldiRecognizer(model, sample_rate)
@@ -68,8 +71,9 @@ def translateAndDisplay():
 transcribe_thread = threading.Thread(target=captureAudio)
 translate_thread = threading.Thread(target=translateAndDisplay)
 
-transcibe_thread.start()
 translate_thread.start()
+transcribe_thread.start()
+
 
 
 
