@@ -6,7 +6,6 @@ import time
 from libretranslatepy import LibreTranslateAPI
 from vosk import Model, KaldiRecognizer
 from display import OLEDDisplay
-from googletrans import Translator
 
 
 
@@ -41,8 +40,8 @@ recognizer = KaldiRecognizer(model, sample_rate)
 display = OLEDDisplay(font_size = 15)
 
 #Initializing translator API
-translator = LibreTranslateAPI("https://translate.argosopentech.com/")
-translatergt = Translator()
+translator = LibreTranslateAPI("https://translate.terraprint.co/")
+#translatergt = Translator()
 
 prev_idx = 0
 #print(audio_input)
@@ -58,9 +57,9 @@ with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dty
 
             if len(words) > 0 :        
                 print("**** ENTERED TRANSLATION *** ")
-                translated = translatergt.translate(text=words, src=from_code, dest=to_code)
-                print(translated.text)
-                display.displayWords(translated.text.split(" "))
+                translated = translator.translate(q=words, source=from_code, target=to_code)
+                print(translated)
+                display.displayWords(translated.split(" "))
                 
 
             #print(final_result)
