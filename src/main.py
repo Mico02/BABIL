@@ -3,9 +3,9 @@ import sys
 import queue
 import json
 import time
-from libretranslatepy import LibreTranslateAPI
+#from libretranslatepy import LibreTranslateAPI
 from vosk import Model, KaldiRecognizer
-from display import OLEDDisplay
+#from display import OLEDDisplay
 
 
 q=queue.Queue()
@@ -30,35 +30,38 @@ print(device)
 BLOCK_SIZE = 10000
 CHANNELS = 1
 
+path = r"/Users/mohamedhussein/Documents/Capstone/VoskModels/vosk-model-small-en-us-0.15"
 #Initalizing vosk model
-model = Model(lang=from_code)
+model = Model(path)
 
 #Initalizing vosk recognizer
 recognizer = KaldiRecognizer(model, sample_rate)
 
 #Initializing the display 
-display = OLEDDisplay(font_size = 15)
+#display = OLEDDisplay(font_size = 15)
 
 #Initializing translator API
-translator = LibreTranslateAPI("https://translate.argosopentech.com/")
+#translator = LibreTranslateAPI("https://translate.argosopentech.com/")
 
 
-previous_num_of_word = 0
+prev_idx = 0
 #print(audio_input)
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
      print("############## START ############## ")
      while True:
         data = q.get()
         if recognizer.AcceptWaveform(data):
-            previous_num_of_word = 0
+            prev_idx = 0
             final_result = json.loads(recognizer.FinalResult())
             print(final_result)
         else: 
             partial_result = json.loads(recognizer.PartialResult())
-            words = partial_result.get("partial").split(" ") 
-            previous_num_of_word += len(words)
-            num_of_words_to_dispay = len(words) - previous_num_of_word
-            for i in range(num_of_words_to_dispay):
-                display.displayWord(words[i])
+            if len(partial_result.get("partial")) > 0:
+                words = partial_result.get("partial").split(" ")
+                new_start_idx = prev_idx
+                new_end_idx = len(words) -1
+                new_words = words[new_start_idx:new_end_idx+1]
+                prev_idx = len(words) - 1 
+                print(new_words)
             
-               
+            
