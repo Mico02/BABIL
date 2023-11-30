@@ -3,6 +3,7 @@ import sys
 import queue
 import json
 import time
+import threading
 #from libretranslatepy import LibreTranslateAPI
 from vosk import Model, KaldiRecognizer
 from display import OLEDDisplay
@@ -45,6 +46,37 @@ recognizer = KaldiRecognizer(model, sample_rate)
 translator = LibreTranslateAPI("https://translate.argosopentech.com/")
 translatergt = Translator()
 
+def captureAudio():
+    with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
+        print("############## START ############## ")
+        display.displayWord("*** START ***") 
+        while True:
+            pass
+
+def translateAndDisplay():
+    data = q.get()
+     if recognizer.AcceptWaveform(data):
+            previous_words_idx = 0
+            final_result = json.loads(recognizer.FinalResult())
+            words = final_result.get("text")
+            if len(words) > 0 :        
+                print("**** ENTERED TRANSLATION *** ")
+                translated = translatergt.translate(text=words, src=from_code, dest=to_code)
+                print(translated.text)
+                display.displayWords(translated.text.split(" "))
+
+transcribe_thread = threading.Thread(target=captureAudio)
+translate_thread = threading.Thread(target=translateAndDisplay)
+
+transcibe_thread.start()
+translate_thread.start()
+
+
+
+
+
+
+"""
 prev_idx = 0
 #print(audio_input)
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
@@ -80,3 +112,4 @@ with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dty
                 #print(words) 
                 print(new_words)
             ''' 
+"""
