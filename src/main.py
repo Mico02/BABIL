@@ -55,15 +55,15 @@ def captureAudio():
 
 def translateAndDisplay():
     data = q.get()
-     if recognizer.AcceptWaveform(data):
-            previous_words_idx = 0
-            final_result = json.loads(recognizer.FinalResult())
-            words = final_result.get("text")
-            if len(words) > 0 :        
-                print("**** ENTERED TRANSLATION *** ")
-                translated = translatergt.translate(text=words, src=from_code, dest=to_code)
-                print(translated.text)
-                display.displayWords(translated.text.split(" "))
+    if recognizer.AcceptWaveform(data):
+        previous_words_idx = 0
+        final_result = json.loads(recognizer.FinalResult())
+        words = final_result.get("text")
+        if len(words) > 0 :        
+            print("**** ENTERED TRANSLATION *** ")
+            translated = translatergt.translate(text=words, src=from_code, dest=to_code)
+            print(translated.text)
+            display.displayWords(translated.text.split(" "))
 
 transcribe_thread = threading.Thread(target=captureAudio)
 translate_thread = threading.Thread(target=translateAndDisplay)
