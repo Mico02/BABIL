@@ -63,7 +63,7 @@ recognizer = KaldiRecognizer(model, sample_rate)
 display = OLEDDisplay(font_size = 15)
 
 #Initializing translator API
-translator = LibreTranslateAPI("https://translate.terraprint.co/")
+translator = LibreTranslateAPI("http://127.0.0.1:5000")
 
 prev_idx = 0
 with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dtype="int16",callback=callback,channels=CHANNELS):
@@ -80,6 +80,7 @@ with sounddevice.RawInputStream(samplerate=sample_rate, blocksize=BLOCK_SIZE,dty
                 print("**** ENTERED TRANSLATION *** ")
                 src = from_code if from_code in translate_langs else vosk_lang_map.get(from_code)
                 dst = to_code if to_code in translate_langs else vosk_lang_map.get(to_code)
+                print(f"srd:{src} dst:{dst}")
                 translated = translator.translate(q=words, source=src, target=dst)
                 print(translated)
                 display.displayWords(translated.split(" "))
