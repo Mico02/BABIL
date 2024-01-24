@@ -2,8 +2,8 @@ import sys
 from transcription import Transcriber
 
 def transcribe(language):
-    transcriber = Transcriber()
-    return
+    transcriber = Transcriber(language=language)
+    transcriber.run()
 
 def translate(from_code, to_code):
     return
