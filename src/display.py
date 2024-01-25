@@ -61,5 +61,9 @@ class OLEDDisplay:
         '''
         self.__font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), font_size)
 
+    def rotate(self, degrees):
+        self.__image = self.__image.rotate(degrees)
+        self.__display.ShowImage(self.__display.getbuffer(self.__image))
+
 
     
