@@ -32,14 +32,23 @@ class Transcriber:
 
     def run(self):
         with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
+            new_word_starting_idx = 0
             print("############## START ############## ")
-            self.__display.displayWord("*** START ***") 
+            self.__display.displayWord("* START *") 
             while True:
                 data = self.__queue.get()
                 if self.recognizer.AcceptWaveform(data):
+                    new_word_starting_idx = 0
                     words = json.loads(self.recognizer.FinalResult()).get("text").split(" ")
-                    print(words)
-                    self.__display.displayWords(words)
+                    #print(words)
                 else: 
-                    partial_result = json.loads(self.recognizer.PartialResult())
-                    #print(partial_result.get("partial"))
+                    partial_result = json.loads(self.recognizer.PartialResult()).get("partial").split(" ")
+                    partial_result = list(filter(None, partial_result))
+                    new_words = partial_result[new_word_starting_idx::]
+                    new_word_starting_idx = len(partial_result)
+                    if len(partial_result) > 0 or len(new_words) > 0:
+                        #print("Partial: ",end="")
+                        #print(partial_result, end="")
+                        #print("New: ",end="")
+                        #print(new_words)
+                        self.__display.displayWords(new_words)
