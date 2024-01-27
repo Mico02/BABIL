@@ -1,6 +1,7 @@
 import sys
 import os
 import time
+import queue
 picdir = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'pic')
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), 'lib'))
 
@@ -21,6 +22,7 @@ class OLEDDisplay:
         Args:
             font_size  (int): font size 
         '''
+
         #Setting the device to work using SPI
         config.Device_SPI = 1
         config.Device_I2C = 0
@@ -41,14 +43,15 @@ class OLEDDisplay:
         self.__image = Image.new('1',(self.__display.width, self.__display.height), "WHITE")
         self.__draw = ImageDraw.Draw(self.__image)
         self.__draw.text((40,20), word, font=self.__font, fill=0)
-        self.__image = self.__image.rotate(180)
+        self.__image = self.__image.rotate(self.__rotation)
         self.__display.ShowImage(self.__display.getbuffer(self.__image))
 
-    def displayWords(self, words: list):
+    def displayWords(self, words):
         for word in words:
             self.displayWord(word)
             time.sleep(0.1)
-    
+
+
     def clear(self, display):
         self.__display.clear()
 
@@ -61,9 +64,15 @@ class OLEDDisplay:
         '''
         self.__font = ImageFont.truetype(os.path.join(picdir, 'Font.ttc'), font_size)
 
+
+    '''
+    BROKEN
     def rotate(self, degrees):
+        THIS METHOD REQURES THAT THERE BE TEXT ALREADY ON DISPLY ON THE SCREEN, OTHERWISE THERE IS NO 
+        IMAGE TO ROTATE !!
         self.__image = self.__image.rotate(degrees)
         self.__display.ShowImage(self.__display.getbuffer(self.__image))
+    '''
 
 
     
