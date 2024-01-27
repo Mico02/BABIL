@@ -23,14 +23,14 @@ class Transcriber:
         self.recognizer = KaldiRecognizer(self.model, self.sample_rate)
 
     #setting up call back for continous audio capture
-    def __callback(self, indata, frames, time, status):
+    def __callback(self,self, indata, frames, time, status):
         """This is called (from a separate thread) for each audio block."""
         if status:
             print(status, file=sys.stderr)
         self.__queue.put(bytes(indata))
 
     def run(self):
-        with sounddevice.RawInputStream(samplerate=self.__sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__audio_data_type,callback=self.__callback,channels=self.__CHANNELS):
+        with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.BLOCK_SIZE,dtype=self.dtype,callback=self.__callback,channels=self.CHANNELS):
             print("############## START ############## ")
             self.display.displayWord("*** START ***") 
             while True:
