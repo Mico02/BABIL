@@ -4,6 +4,7 @@ from transcription import Transcriber
 def transcribe(language):
     transcriber = Transcriber(language=language)
     transcriber.run()
+    return
 
 def translate(from_code, to_code):
     return
@@ -16,7 +17,7 @@ if mode == '-c':
     exit()
 else: 
     from_code = sys.argv[1]
-    to_code = sys.argc[2]
+    to_code = sys.argv[2]
     if from_code == to_code:
         transcribe(language=from_code)
         exit()
