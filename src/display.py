@@ -49,7 +49,6 @@ class OLEDDisplay:
     def displayWords(self, words):
         for word in words:
             self.displayWord(word)
-            time.sleep(0.05)
 
 
     def clear(self, display):
