@@ -3,6 +3,8 @@ import queue
 import queue 
 import sys
 import json
+import time
+import os
 from vosk import Model, KaldiRecognizer
 
 class Transcriber:
@@ -33,13 +35,19 @@ class Transcriber:
     def run(self):
         with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
             new_word_starting_idx = 0
+            shutdown_phrase = ["one", "two", "three", "stop"]
             print("############## START ############## ")
             self.__display.displayWord("* START *") 
             while True:
                 data = self.__queue.get()
                 if self.recognizer.AcceptWaveform(data):
                     new_word_starting_idx = 0
-                    words = json.loads(self.recognizer.FinalResult()).get("text").split(" ")
+                    words = json.loads(self.recognizer.FinalResult()).get("text")
+                    if all(word in words for word in shutdown_phrase):
+                         self.__display.displayWord("*STOPPING*")
+                         time.sleep(1)
+                         self.__display.clear()
+                         exit()
                     #print(words)
                 else: 
                     partial_result = json.loads(self.recognizer.PartialResult()).get("partial").split(" ")
