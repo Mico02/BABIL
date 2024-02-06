@@ -4,11 +4,15 @@ import queue
 import sys
 import json
 import time
-import os
+import threading
+from buttonlistener import start_listener
 from vosk import Model, KaldiRecognizer
 
 class Transcriber:
     def __init__(self, language, display, audio_block_size=10000, audio_channels=1, audio_data_type="int16"):
+        #Initializing the button listener flag
+        self.__exit_flag = [False]
+        
         #Specifing audio capture data
         #self.sample_rate = sample_rate
         self.__BLOCK_SIZE = audio_block_size
@@ -34,20 +38,24 @@ class Transcriber:
 
     def run(self):
         with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
+            #Initializing button listener thread
+            listener_thread = threading.Thread(target=start_listener,args=(self.__exit_flag,))
+            listener_thread.start()
+
             new_word_starting_idx = 0
             shutdown_phrase = ["one", "two", "three", "stop"]
             print("############## START ############## ")
             self.__display.displayWord("* START *") 
             while True:
+                if self.__exit_flag[0]:
+                    self.__display.displayWord("*STOPPING*")
+                    time.sleep(1)
+                    self.__display.displayWord("")
+                    exit()
                 data = self.__queue.get()
                 if self.recognizer.AcceptWaveform(data):
                     new_word_starting_idx = 0
                     words = json.loads(self.recognizer.FinalResult()).get("text")
-                    if all(word in words for word in shutdown_phrase):
-                         self.__display.displayWord("*STOPPING*")
-                         time.sleep(1)
-                         self.__display.clear()
-                         exit()
                     #print(words)
                 else: 
                     partial_result = json.loads(self.recognizer.PartialResult()).get("partial").split(" ")
