@@ -1,66 +1,93 @@
 from button import ButtonHandler, PowerButtonHandler
+from display import OLEDDisplay
+import sys
 import threading
 
-from_langs = {"en" : "English",
-              "cn" : "Chinese", 
-              "ru" : "Russian", 
-              "fr" : "French", 
-              "de" : "German", 
-              "es" : "Spanish", 
-              "pt" : "Portuguese", 
-              "gr" : "Greek", 
-              "tr" : "Turkish", 
-              "vn" : "Vietnamese ", 
-              "it" : "Italian", 
-              "nl" : "Dutch",
-              "ar" : "Arabic",
-              "ca" : "Catalan",
-              "fa" : "Farsi",
-              "ph" : "Filipino",
-              "uk" : "Ukrainian",
-              "kz" : "Kazakh",
-              "sv" : "Swedish",
-              "jp" : "Japanese",
-              "eo" : "Esparanto",
-              "hi" : "Hindi",
-              "cs" : "Czech",
-              "po" : "Polish",
-              "uz" : "Uzbek",
-              "ko" : "Korean",
-              "br" : "Breton",
-              "gu" : "Gujarati",} 
 
-translation_map = {"en"}
+caption_languages = {"en" : "English",
+                     "cn" : "Chinese", 
+                     "ru" : "Russian", 
+                     "fr" : "French", 
+                     "de" : "German", 
+                     "es" : "Spanish", 
+                     "pt" : "Portuguese", 
+                     "gr" : "Greek", 
+                     "tr" : "Turkish", 
+                     "vn" : "Vietnamese ", 
+                     "it" : "Italian", 
+                     "nl" : "Dutch",
+                     "ar" : "Arabic",
+                     "ca" : "Catalan",
+                     "fa" : "Farsi",
+                     "ph" : "Filipino",
+                     "uk" : "Ukrainian",
+                     "kz" : "Kazakh",
+                     "sv" : "Swedish",
+                     "jp" : "Japanese",
+                     "eo" : "Esparanto",
+                     "hi" : "Hindi",
+                     "cs" : "Czech",
+                     "po" : "Polish",
+                     "uz" : "Uzbek",
+                     "ko" : "Korean",
+                     "br" : "Breton",
+                     "gu" : "Gujarati"} 
+
     
-def select_from_language(buttons):
+
+def select_device_mode(buttons: ButtonHandler, display: OLEDDisplay):
+    modes = ["Captioning", "Translation"]
+    selected = False
+    option = [0]
+    idx = 0
+    while not selected:
+        print(modes[idx])
+        display.displayWord(modes[idx])
+        buttons.selectOption(option)
+        if option[0] == ButtonHandler.RIGHT:
+            idx = (idx + 1) % len(modes)
+        elif option[0] == ButtonHandler.LEFT:
+            idx = (idx - 1) % len(modes)
+        elif option[0] == ButtonHandler.SELECT:
+            selected = True
+        else:
+            print("Error: invalid button", file=sys.err)
+    return modes[idx]
+
+def select_language(buttons: ButtonHandler, languages: dict, display: OLEDDisplay):
     idx = 0
     selected = False
-    lang = ""
-    langs = list(from_langs)
-    x = [10]
+    x = [0]
+    lang_list = list(languages)
     while not selected: 
+        a = languages.get(lang_list[idx])
+        print(a, end=" ")
+        display.displayWord(a)
         buttons.selectOption(x)
-        print(from_langs.get(langs[idx]), end=" ")
         if x[0] == ButtonHandler.RIGHT: #MOVE TO THE RIGHT
-            idx = (idx + 1) % len(langs)
+            idx = (idx + 1) % len(languages)
         elif x[0] == ButtonHandler.LEFT: #MOVE TO THE LEFT
-            idx = (idx - 1) % len(langs)
+            idx = (idx - 1) % len(languages)
         elif x[0] == ButtonHandler.SELECT:
             selected = True
-            lang = langs[idx]
+        else:
+            print("Error: invalid button", file=sys.err)
         print(idx)
-    return lang
+    return languages.get(lang_list[idx])
 
-def select_to_language():
-    return
 
 powerButton = PowerButtonHandler()
 buttons = ButtonHandler()
-
-
 powerButtonThread = threading.Thread(target=powerButton.wait_for_press)
 powerButtonThread.start()
-a = select_from_language(buttons)
-print(a)
+
+display = OLEDDisplay(font_size=15)
+
+mode = select_device_mode(buttons,display)
+print(f"{mode} is the selected mode")
+lang = select_language(buttons, caption_languages,display)
+print(f"{lang} is the selected lang")
+
+
 powerButton.stop_waiting()
 powerButtonThread.join()

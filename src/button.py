@@ -1,10 +1,12 @@
-"""This provides a Python class to control Button GPIO with different functions"""
+
 
 import RPi.GPIO as GPIO
 import time
 import sys
 import os 
+
 class ButtonHandler:
+    """This provides a Python class to control Button GPIO with different functions"""
     #Defining a const value that represents the buttons for left, right, select
     LEFT = 1   
     RIGHT = 2  
