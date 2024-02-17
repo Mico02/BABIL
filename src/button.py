@@ -28,29 +28,26 @@ class ButtonHandler:
             for pin in self._PHY_PINS:
                 GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
                 return
-            
         #Program will reach here if the GPIO was/is set to BCM, GPIO pins are the set using BCM pin numbers
         for pin in self._BCM_PINS:
             GPIO.setup(pin,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    def __select_left(self,selectedOption,flag):
+    def __select_left(self,selectedOption):
         selectedOption[0] = ButtonHandler.LEFT
         self.__runFlag = False
-        print("this is left")
-    def __select_right(self,selectedOption,flag):
+        
+    def __select_right(self,selectedOption):
         selectedOption[0] = ButtonHandler.RIGHT
         self.__runFlag = False
-        print("this is right")
-    def __select_select(self,selectedOption,flag):
+        
+    def __select_select(self,selectedOption):
         selectedOption[0] = ButtonHandler.SELECT
         self.__runFlag = False
-        print("this is select")
 
     def selectOption(self,selectedOption):
         self.__runFlag = True
-        GPIO.add_event_detect(self._BCM_PINS[0], GPIO.RISING, callback=lambda x: self.__select_left(selectedOption,self.__runFlag))
-        GPIO.add_event_detect(self._BCM_PINS[1], GPIO.RISING, callback=lambda x: self.__select_right(selectedOption,self.__runFlag))
-        GPIO.add_event_detect(self._BCM_PINS[2], GPIO.RISING, callback=lambda x: self.__select_select(selectedOption,self.__runFlag))
-        print("waiting")
+        GPIO.add_event_detect(self._BCM_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__select_left(self,selectedOption)  ,bouncetime=1000)
+        GPIO.add_event_detect(self._BCM_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__select_right(self,selectedOption) ,bouncetime=1000)
+        GPIO.add_event_detect(self._BCM_PINS[2], GPIO.RISING, callback=lambda z: ButtonHandler.__select_select(self,selectedOption),bouncetime=1000)
         while self.__runFlag:
             pass
         time.sleep(0.001) #prevents seg fault 
