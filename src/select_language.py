@@ -1,7 +1,6 @@
-from button import ButtonListener
-import faulthandler
+from button import ButtonHandler, PowerButtonHandler
+import threading
 
-faulthandler.enable()
 from_langs = {"en" : "English",
               "cn" : "Chinese", 
               "ru" : "Russian", 
@@ -42,21 +41,26 @@ def select_from_language(buttons):
     while not selected: 
         buttons.selectOption(x)
         print(from_langs.get(langs[idx]), end=" ")
-        print(idx)
-        if x[0] == 3: #MOVE TO THE RIGHT
+        if x[0] == ButtonHandler.RIGHT: #MOVE TO THE RIGHT
             idx = (idx + 1) % len(langs)
-        elif x[0] == 2: #MOVE TO THE LEFT
+        elif x[0] == ButtonHandler.LEFT: #MOVE TO THE LEFT
             idx = (idx - 1) % len(langs)
-        elif x[0] == 1:
+        elif x[0] == ButtonHandler.SELECT:
             selected = True
             lang = langs[idx]
+        print(idx)
     return lang
 
 def select_to_language():
     return
 
+powerButton = PowerButtonHandler()
+buttons = ButtonHandler()
 
 
-buttons = ButtonListener()
+powerButtonThread = threading.Thread(target=powerButton.wait_for_press)
+powerButtonThread.start()
 a = select_from_language(buttons)
 print(a)
+powerButton.stop_waiting()
+powerButtonThread.join()
