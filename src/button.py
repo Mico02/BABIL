@@ -46,13 +46,13 @@ class ButtonHandler:
     def selectOption(self,selectedOption):
         self.__runFlag = True
         if self.__mode == GPIO.BCM:
-            GPIO.add_event_detect(self._BCM_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__select_left(self,selectedOption)  ,bouncetime=1000)
-            GPIO.add_event_detect(self._BCM_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__select_right(self,selectedOption) ,bouncetime=1000)
-            GPIO.add_event_detect(self._BCM_PINS[2], GPIO.RISING, callback=lambda z: ButtonHandler.__select_select(self,selectedOption),bouncetime=1000)
+            GPIO.add_event_detect(self._BCM_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__select_left(self,selectedOption)  ,bouncetime=250)
+            GPIO.add_event_detect(self._BCM_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__select_right(self,selectedOption) ,bouncetime=250)
+            GPIO.add_event_detect(self._BCM_PINS[2], GPIO.RISING, callback=lambda z: ButtonHandler.__select_select(self,selectedOption),bouncetime=250)
         elif self.__mode == GPIO.BOARD:
-            GPIO.add_event_detect(self._PHYS_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__select_left(self,selectedOption)  ,bouncetime=1000)
-            GPIO.add_event_detect(self._PHYS_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__select_right(self,selectedOption) ,bouncetime=1000)
-            GPIO.add_event_detect(self._PHYS_PINS[2], GPIO.RISING, callback=lambda z: ButtonHandler.__select_select(self,selectedOption),bouncetime=1000)
+            GPIO.add_event_detect(self._PHYS_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__select_left(self,selectedOption)  ,bouncetime=250)
+            GPIO.add_event_detect(self._PHYS_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__select_right(self,selectedOption) ,bouncetime=250)
+            GPIO.add_event_detect(self._PHYS_PINS[2], GPIO.RISING, callback=lambda z: ButtonHandler.__select_select(self,selectedOption),bouncetime=250)
         else:
             print("Error: GPIO Mode not set", file=sys.err)
         while self.__runFlag:
@@ -68,7 +68,7 @@ class ButtonHandler:
         GPIO.cleanup()
 
 class PowerButtonHandler():
-    def __init__(self, pButtonPinBCM=16, pButtonPinPhys=36):
+    def __init__(self, pButtonPinBCM=4, pButtonPinPhys=7):
         '''
         Initializes Power Button Handler 
         '''
@@ -89,18 +89,20 @@ class PowerButtonHandler():
         #Program will reach here if the GPIO was/is set to BCM, GPIO pins are the set using BCM pin numbers
         GPIO.setup(self.__pButtonPinBCM,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
     
-    def __shutdown(self):
+    def __shutdown(self,channel):
         print("SHUTTING DOWN!")
         os.system("sudo shutdown -h now")
         exit()
 
     def wait_for_press(self):
+        self.__flag = True
         if self.__mode == GPIO.BCM:
-           GPIO.add_event_detect(self.__pButtonPinBCM, callback=self.__shutdown, bouncetime=1000)
+           GPIO.add_event_detect(self.__pButtonPinBCM, GPIO.RISING, callback=self.__shutdown, bouncetime=500)
         elif self.__mode == GPIO.BOARD:
-            GPIO.add_event_detect(self.__pButtonPinPhys, callback=self.__shutdown, bouncetime=1000)
-        while True:
+            GPIO.add_event_detect(self.__pButtonPinPhys, GPIO.RISING, callback=self.__shutdown, bouncetime=500)
+        while self.__flag:
             pass
-
+    def stop_waiting(self):
+        self.__flag = False;
 
 
