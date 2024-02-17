@@ -1,45 +1,25 @@
-from enum import Enum
-import RPi.GPIO as GPIO #
-import time as time
-class ButtonListener():
-    LEFT = 1
-    SELECT = 2
-    RIGHT = 3
+import RPi.GPIO as GPIO
+class ButtonHandler:
     def __init__(self):
-        self.__runflag = True
-    
-    @staticmethod
-    def __select_left(self,option):
-        option[0] = ButtonListener.LEFT
-        self.__runflag = False
-        return
-
-    @staticmethod
-    def __select_select(self,option):
-        option[0] = ButtonListener.SELECT
-        self.__runflag = False
-        return
-
-    @staticmethod
-    def __select_right(self,option):
-        option[0] = ButtonListener.RIGHT
-        self.__runflag = False
-        return
-
-    def selectOption(self,selectedOption):
-        GPIO.setwarnings(False) # Ignore warning for now
-        GPIO.setmode(GPIO.BCM) # Use BCM pin numbering
-        GPIO.setup(5, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 5 to be an input pin and set initial value to be pulled low (off
-        GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 6 to be an input pin and set initial value to be pulled low (off)
-        GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_DOWN) # Set pin 13 to be an input pin and set initial value to be pulled low (off)
-        GPIO.add_event_detect(5,GPIO.RISING,callback=lambda x: ButtonListener.__select_left(self,selectedOption)) # Setup event on pin 12 rising edge
-        GPIO.add_event_detect(17,GPIO.RISING,callback=lambda x: ButtonListener.__select_select(self,selectedOption)) # Setup event on pin 12 rising edge
-        GPIO.add_event_detect(13,GPIO.RISING,callback=lambda x: ButtonListener.__select_right(self,selectedOption)) # Setup event on pin 12 rising edge
+        BCM_PINS = [5, 6, 13]   #BCM GPIO pin connections for the buttons
+        PHY_PINS = [29, 31, 33] #Physical GPIO pin connections for the buttons
+        GPIO.setwarnings(False) #Disabling GPIO warnings
         
-        
-        while self.__runflag:
-            pass
-        self.__runflag = True
-        GPIO.cleanup()
-        time.sleep(0.01) #Fixes issues with GPIO segmenation faults 
-        return
+        #Getting the current GPIO mode so that there is no conflict with any other program using the GPIO
+        self.__mode = GPIO.getmode() 
+
+        if self.__mode == None: #if the GPIO layout is not set, set it to BCM
+            GPIO.setmode(GPIO.BCM)
+            self.__mode = GPIO.BCM
+        elif self.__mode == GPIO.BOARD: #if the GPIO layout is set to physical, then setup using phys pin numbers
+            for pin in PHY_PINS:
+                GPIO.setup(pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+                return
+            
+        #Program will reach here if the GPIO was/is set to BCM, GPIO pins are the set using BCM pin numbers
+        for pin in BCM_PINS:
+            GPIO.setup(pin,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+    def __del__(self):
+        GPIO.clean()
+
