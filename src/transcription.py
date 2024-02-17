@@ -5,7 +5,6 @@ import sys
 import json
 import time
 import threading
-from buttonlistener import start_listener
 from vosk import Model, KaldiRecognizer
 
 class Transcriber:
@@ -38,9 +37,6 @@ class Transcriber:
 
     def run(self):
         with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
-            #Initializing button listener thread
-            listener_thread = threading.Thread(target=start_listener,args=(self.__exit_flag,))
-            listener_thread.start()
 
             new_word_starting_idx = 0
             shutdown_phrase = ["one", "two", "three", "stop"]
