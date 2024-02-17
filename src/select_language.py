@@ -1,4 +1,7 @@
 from button import ButtonListener
+import faulthandler
+
+faulthandler.enable()
 from_langs = {"en" : "English",
               "cn" : "Chinese", 
               "ru" : "Russian", 
@@ -35,13 +38,16 @@ def select_from_language(buttons):
     selected = False
     lang = ""
     langs = list(from_langs)
-    while not selected:
-        print(from_langs.get(langs[idx]))
-        if x == '3': #MOVE TO THE RIGHT
+    x = [10]
+    while not selected: 
+        buttons.selectOption(x)
+        print(from_langs.get(langs[idx]), end=" ")
+        print(idx)
+        if x[0] == 3: #MOVE TO THE RIGHT
             idx = (idx + 1) % len(langs)
-        elif x == '2': #MOVE TO THE LEFT
+        elif x[0] == 2: #MOVE TO THE LEFT
             idx = (idx - 1) % len(langs)
-        elif x == '1':
+        elif x[0] == 1:
             selected = True
             lang = langs[idx]
     return lang
@@ -52,5 +58,5 @@ def select_to_language():
 
 
 buttons = ButtonListener()
-a = select_from_language(b)
+a = select_from_language(buttons)
 print(a)
