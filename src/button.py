@@ -1,10 +1,8 @@
-
-
 import RPi.GPIO as GPIO
 import time
-import sys
 import os 
-
+import sys
+import signal
 class ButtonHandler:
     """This provides a Python class to control Button GPIO with different functions"""
     #Defining a const value that represents the buttons for left, right, select
@@ -45,6 +43,11 @@ class ButtonHandler:
         selectedOption[0] = ButtonHandler.SELECT
         self.__runFlag = False
 
+    def __reboot(self):
+        subprocess.Popen(["python3" ,"src/select_language.py"])
+        print("GOODBYE BABIL")
+        os.kill(os.getpid(),signal.SIGKILL)
+
     def selectOption(self,selectedOption):
         self.__runFlag = True
         if self.__mode == GPIO.BCM:
@@ -65,12 +68,24 @@ class ButtonHandler:
         GPIO.remove_event_detect(self._BCM_PINS[2])
         return
 
+    def reboot_reselect(self):
+        self.__runFlag = True
+        if self.__mode == GPIO.BCM:
+            GPIO.add_event_detect(self._BCM_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__reboot(self)  ,bouncetime=250)
+            GPIO.add_event_detect(self._BCM_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__reboot(self) ,bouncetime=250)
+            GPIO.add_event_detect(self._BCM_PINS[2], GPIO.RISING, callback=lambda x: ButtonHandler.__reboot(self)  ,bouncetime=250)
+        elif self.__mode == GPIO.BOARD:
+            GPIO.add_event_detect(self._PHYS_PINS[0], GPIO.RISING, callback=lambda x: ButtonHandler.__reboot(self) ,bouncetime=250)
+            GPIO.add_event_detect(self._PHYS_PINS[1], GPIO.RISING, callback=lambda y: ButtonHandler.__reboot(self) ,bouncetime=250)
+            GPIO.add_event_detect(self._PHYS_PINS[2], GPIO.RISING, callback=lambda y: ButtonHandler.__reboot(self) ,bouncetime=250)
+        else:
+            print("Error: GPIO Mode not set", file=sys.err)
 
     def __del__(self):
         GPIO.cleanup()
 
 class PowerButtonHandler():
-    def __init__(self, pButtonPinBCM=4, pButtonPinPhys=7):
+    def __init__(self, pButtonPinBCM=26, pButtonPinPhys=37):
         '''
         Initializes Power Button Handler 
         '''
@@ -94,7 +109,7 @@ class PowerButtonHandler():
     def __shutdown(self,channel):
         print("SHUTTING DOWN!")
         os.system("sudo shutdown -h now")
-        exit()
+        sys.exit()
 
     def wait_for_press(self):
         self.__flag = True
