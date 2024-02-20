@@ -2,7 +2,7 @@ from button import ButtonHandler, PowerButtonHandler
 from display import OLEDDisplay
 import sys
 import threading
-
+import subprocess
 
 caption_languages = {"en" : "English",
                      "cn" : "Chinese", 
@@ -41,7 +41,6 @@ def select_device_mode(buttons: ButtonHandler, display: OLEDDisplay):
     option = [0]
     idx = 0
     while not selected:
-        print(modes[idx])
         display.displayWord(modes[idx])
         buttons.selectOption(option)
         if option[0] == ButtonHandler.RIGHT:
@@ -60,9 +59,7 @@ def select_language(buttons: ButtonHandler, languages: dict, display: OLEDDispla
     x = [0]
     lang_list = list(languages)
     while not selected: 
-        a = languages.get(lang_list[idx])
-        print(a, end=" ")
-        display.displayWord(a)
+        display.displayWord(languages.get(lang_list[idx]))
         buttons.selectOption(x)
         if x[0] == ButtonHandler.RIGHT: #MOVE TO THE RIGHT
             idx = (idx + 1) % len(languages)
@@ -72,8 +69,7 @@ def select_language(buttons: ButtonHandler, languages: dict, display: OLEDDispla
             selected = True
         else:
             print("Error: invalid button", file=sys.err)
-        print(idx)
-    return languages.get(lang_list[idx])
+    return lang_list[idx]
 
 
 powerButton = PowerButtonHandler()
@@ -85,9 +81,14 @@ display = OLEDDisplay(font_size=15)
 
 mode = select_device_mode(buttons,display)
 print(f"{mode} is the selected mode")
-lang = select_language(buttons, caption_languages,display)
-print(f"{lang} is the selected lang")
+if mode == "Captioning":
+    lang = select_language(buttons, caption_languages,display)
+    print(f"{caption_languages.get(lang)} is the selected lang")
+    powerButton.stop_waiting()
+    powerButtonThread.join()
+    subprocess.Popen(["python3" ,"src/main.py","-c",lang])
+    print("GOODBYE")
+    exit()
 
 
-powerButton.stop_waiting()
-powerButtonThread.join()
+
