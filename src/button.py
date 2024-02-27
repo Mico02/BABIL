@@ -3,6 +3,7 @@ import time
 import os 
 import sys
 import signal
+import subprocess
 class ButtonHandler:
     """This provides a Python class to control Button GPIO with different functions"""
     #Defining a const value that represents the buttons for left, right, select
