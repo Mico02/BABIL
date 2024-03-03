@@ -61,10 +61,11 @@ class Transcriber:
                     new_word_starting_idx = len(partial_result)
                     if len(partial_result) > 0 or len(new_words) > 0:
                         self.__display.displayWords(new_words)
+
+
     def runWithTranslation(self, translator: Translator , bufferSize):
         buffer = []
-        thread = threading.Thread(target=lambda: translator.run(buffer))
-        thread_started = False
+        thread_started_flag = [False]
         with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
             new_word_starting_idx = 0
             shutdown_phrase = ["one", "two", "three", "stop"]
@@ -80,8 +81,23 @@ class Transcriber:
                 if self.recognizer.AcceptWaveform(data):
                     new_word_starting_idx = 0
                     words = json.loads(self.recognizer.FinalResult()).get("text")
-                elif len(buffer) >= bufferSize:
+                    if thread_started_flag[0] == True:
+                        thread.join()
+                    thread = threading.Thread(target=lambda: translator.run(buffer,thread_started_flag))     
                     thread.start()
+                    time.sleep(0.01)
+                    buffer.clear()
+                    thread_started_flag[0] = [True]
+                elif len(buffer) >= bufferSize:
+                    print("*****BUFFER FILLED ****")
+                    #Checks to see if there is a thread already running, if so wait until it is done 
+                    if thread_started_flag[0] == True:
+                        thread.join()
+                    thread = threading.Thread(target=lambda: translator.run(buffer,thread_started_flag))     
+                    thread.start()
+                    time.sleep(0.01)
+                    buffer.clear()
+                    thread_started_flag[0] = [True]
                 else: 
                     partial_result = json.loads(self.recognizer.PartialResult()).get("partial").split(" ")
                     partial_result = list(filter(None, partial_result))
@@ -90,4 +106,5 @@ class Transcriber:
                     if len(partial_result) > 0 or len(new_words) > 0:
                         for word in new_words:
                             buffer.append(word)
+                            print(word)
                         #self.__display.displayWords(new_words)
