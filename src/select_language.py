@@ -33,6 +33,9 @@ caption_languages = {"en" : "English",
                      "br" : "Breton",
                      "gu" : "Gujarati"} 
 
+from_lang_translation = {
+    
+}
     
 
 def select_device_mode(buttons: ButtonHandler, display: OLEDDisplay):
@@ -89,6 +92,11 @@ if mode == "Captioning":
     subprocess.Popen(["python3" ,"src/main.py","-c",lang])
     print("GOODBYE")
     exit()
-
+elif mode == "Translation":
+    from_lang = select_language(buttons, from_lang_translation, display)
+    print(f"{caption_languages.get(from_lang)} is the selected from lang")
+    
+    to_lang = select_language(buttons, to_lang_translation, display)
+    print(f"{caption_languages.get(from_lang)} is the selected to lang")
 
 
