@@ -1,9 +1,9 @@
 import subprocess
-from transcription import Transcriber
 from libretranslatepy import LibreTranslateAPI
 from display import OLEDDisplay
+import time
 
-class Translator(Transcriber):
+class Translator():
     def __init__(self, from_code, to_code):
 
         #Setting instance variables for from and to codes
@@ -11,8 +11,8 @@ class Translator(Transcriber):
         self.__to_code = to_code
         
         #Starting local translation API 
-        subprocess.run(["libretranslate"])
-
+        subprocess.Popen(["libretranslate"])
+        time.sleep(1)
         #Initializing translator API
         self.__translator = LibreTranslateAPI("http://127.0.0.1:5000")
 
@@ -21,5 +21,7 @@ class Translator(Transcriber):
 
 
     def run(self, words):
+        words = []
         translated = self.__translator.translate(q=words,source=self.__from_code, target=self.__to_code)
         self.__display.displayWords(translated.split(" "))
+        exit()
