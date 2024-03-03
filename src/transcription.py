@@ -5,6 +5,7 @@ import sys
 import json
 import time
 import threading
+from translation import Translator
 from vosk import Model, KaldiRecognizer
 
 class Transcriber:
@@ -59,8 +60,34 @@ class Transcriber:
                     new_words = partial_result[new_word_starting_idx::]
                     new_word_starting_idx = len(partial_result)
                     if len(partial_result) > 0 or len(new_words) > 0:
-                        #print("Partial: ",end="")
-                        #print(partial_result, end="")
-                        #print("New: ",end="")
-                        #print(new_words)
                         self.__display.displayWords(new_words)
+    def runWithTranslation(self, translator: Translator , bufferSize):
+        buffer = []
+        thread = threading.Thread(target=lambda: translator.run(buffer))
+        thread_started = False
+        with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
+            new_word_starting_idx = 0
+            shutdown_phrase = ["one", "two", "three", "stop"]
+            print("############## START ############## ")
+            self.__display.displayWord("* START *") 
+            while True:
+                if self.__exit_flag[0]:
+                    self.__display.displayWord("*STOPPING*")
+                    time.sleep(1)
+                    self.__display.displayWord("")
+                    exit()
+                data = self.__queue.get()
+                if self.recognizer.AcceptWaveform(data):
+                    new_word_starting_idx = 0
+                    words = json.loads(self.recognizer.FinalResult()).get("text")
+                elif len(buffer) >= bufferSize:
+                    thread.start()
+                else: 
+                    partial_result = json.loads(self.recognizer.PartialResult()).get("partial").split(" ")
+                    partial_result = list(filter(None, partial_result))
+                    new_words = partial_result[new_word_starting_idx::]
+                    new_word_starting_idx = len(partial_result)
+                    if len(partial_result) > 0 or len(new_words) > 0:
+                        for word in new_words:
+                            buffer.append(word)
+                        #self.__display.displayWords(new_words)
