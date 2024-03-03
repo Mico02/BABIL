@@ -1,6 +1,7 @@
 import sys
 import threading
 from transcription import Transcriber
+from translation import Translator
 from display import OLEDDisplay
 from button import ButtonHandler, PowerButtonHandler
 
@@ -9,7 +10,10 @@ def transcribe(language, display):
     transcriber.run()
     return
 
-def translate(from_code, to_code):
+def translate(from_code, to_code, display):
+    transcriber = Transcriber(language=from_code, display=display)
+    translatator = Translator(from_code=from_code, to_code=to_code)
+    transcriber.runWithTranslation(translatator,5)
     return
 
 def main():
@@ -22,7 +26,7 @@ def main():
     reboot.start()
     power.start()
     #Initializing display object
-    display = OLEDDisplay(font_size=15)
+    display = OLEDDisplay(font_size=10)
 
     #Read cmd arguements 
     mode = sys.argv[1]
@@ -36,7 +40,7 @@ def main():
         if from_code == to_code:
             transcribe(language=from_code)
             sys.exit()
-        translate(from_code=from_code, to_code=to_code)
+        translate(from_code=from_code, to_code=to_code, display=display)
         sys.exit()
     reboot.join()
     power.join()
