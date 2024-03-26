@@ -37,6 +37,9 @@ class Transcriber:
         self.__queue.put(bytes(indata))
 
     def run(self):
+        f = open("transcription_test.txt", "a")
+        
+
         with sounddevice.RawInputStream(samplerate=self.sample_rate, blocksize=self.__BLOCK_SIZE,dtype=self.__dtype,callback=self.__callback,channels=self.__CHANNELS):
 
             new_word_starting_idx = 0
@@ -61,6 +64,8 @@ class Transcriber:
                     new_word_starting_idx = len(partial_result)
                     if len(partial_result) > 0 or len(new_words) > 0:
                         self.__display.displayWords(new_words)
+                        for word in new_words:
+                            f.write(word)
 
 
     def runWithTranslation(self, translator: Translator , bufferSize):
