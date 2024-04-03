@@ -1,6 +1,39 @@
+-- WHEN USING TEXT INPUT --
+(no buffer)
 Parents were worried about what to eat for their children after the Sande's toxic milk powder incident 
 A good friend is someone who can share happiness and sorrow with you 
 I appreciate your advice. It helped me get along 
 This is his first e-mail conversation with a pen friend 
 When we were playing by the pool, that naughty boy deliberately pushed me into the water
 Love doesn't bore you. The longer you spend, the more fun you get 
+
+--- WHEN USING SPEECH INPUT (speech -> transcription -> translator) ---
+(10 word buffer)
+1. In the mountains, after the story of the powder came to light, the doorman of the parents What to eat and worry about (在山路有来奶粉事件曝光后家长门卫该给孩子吃什么而忧虑)
+2. Good friends are those who share with you joy and sorrow (好好朋友就是和你分享快乐和忧伤的人)
+3. I am pleased to thank you for your advice. He helped me Get along with your classmates(我很高兴感激你的建议他帮助了我与同学融洽相处)
+4. This is the first time he has spoken with a pen friend by e-mail (这是他第一次用电子邮件与笔友交流)
+5. When we played by the pool The naughty boy deliberately pushed me down into the water (的我们在游泳池边玩的时候淘气的男孩故意把我推倒了水里)
+6. A hobby is not to make you tired of your input The longer the time, the fun, the reading(爱好是不会让你感到厌倦的你投入的时间越长乐趣阅读)
+
+-- SPEED TEST --
+
+*****WE ARE SAYING WORDS/PHRASE THE FILL THE BUFFER COMPLETLY*****
+-- USING A ONE WORD BUFFER --
+SPEED: 1.95s, 2.2s, 2s -> avg = 2.05 seconds
+
+-- USING A 5 WORD BUFFER -- 
+SPEED: 4.075s, 2.75s, 1.28s, 1.2s, 4.47s, 2.3s -> AVG = 2.67s
+
+NOTES: IT SEEMS THAT THE SPEED OF THE TRANSLATION GETS BETTER OVER MULTIPLE TRIES,
+WHEN RUNNING THE PROGRAM AT FIRST, IT SEEMS TO HAVE A DELAY AROUND 3-4s, AFTER 
+TESTING AFTER THE FIRST, THE TRANSLATOR SEEMS TO SPEED UP AND GET SPEEDS AROUNDS
+2-3s.
+
+-- USING A 10 WORD BUFFER -- 
+SPEED: 4.2s, 3.5s, 3.9s, 2.9s -> AVG = 2.9s
+
+NOTES: IT EXHIBITS THE SAME PHENOMENA AS THE WHNE USING THE 5 WORD BUFFER AND DOING MULITPlE RUNS
+
+
+
