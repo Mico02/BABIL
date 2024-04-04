@@ -28,7 +28,7 @@ HTER for translation = 0
 3. I am pleased to thank you for your advice. He helped me Get along with your classmates(我很高兴感激你的建议他帮助了我与同学融洽相处)
 I really thank you for your advice. It helped me Get along with my classmates(我很感激你的建议他帮助了我与同学们融洽相处)
 HTER for transcription = 19%
-HTER for translation = 20%
+HTER for translation = 33.3%
 4. This is the first time he has spoken with a pen friend by e-mail (这是他第一次用电子邮件与笔友交流)
 This is the first time he has spoken with a pen friend by e-mail(这是他第一次用电子邮件与笔友交流)
 HTER for transcription = 0
@@ -38,9 +38,9 @@ When we played by the pool The naughty boy deliberately pushed me into the water
 HTER for transcription = 14.3%
 HTER for translation = 6.7%
 6. A hobby is not to make you tired of your input The longer the time, the fun, the reading(爱好是不会让你感到厌倦的你投入的时间越长乐趣阅读)
-A hobby will not make you bored, The longer you invest the time, the more fun you get(爱好是不会让你感到厌倦的你投入的时间越长乐趣越多)
+A hobby will not make you tired of, you invest The longer the time, the more fun you get(爱好是不会让你感到厌倦的你投入的时间越长乐趣越多)
 HTER for transcription = 8.3%
-HTER for translation = 27.8%
+HTER for translation = 47.4%
 
 AVG HTER for transcription = 
 AVG HTER for translation = 
