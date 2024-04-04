@@ -21,6 +21,11 @@ AVG = 9.7%
 After Sanlu's toxic milk powder came to light, the parents worry about What to feed their children(在三鹿有毒奶粉事件曝光后家长们为该给孩子吃什么而忧虑)
 HTER for transcription = 19.2%
 HTER for translation = 41.2%
+1(REDO). After the exposure of the toxic milk powder, the doorman shall give it to the parents Children, eat what, and worry (在有毒奶粉事件曝光后家长门卫该给孩子吃什么而忧虑)
+
+
+
+
 2. Good friends are those who share with you joy and sorrow (好好朋友就是和你分享快乐和忧伤的人)
 Good friends are those who share with you joy and sorrow(好朋友就是能和你分享快乐和忧伤的人)
 HTER for transcription = 11.8%
@@ -44,6 +49,16 @@ HTER for translation = 47.4%
 
 AVG HTER for transcription = 
 AVG HTER for translation = 
+
+
+(5 word buffer)
+1. There's a poison, powdered milk incident After exposure, parents, gatekeepers Children, eat what, and worry (在有毒奶粉事件曝光后家长门卫该给孩子吃什么而忧虑)
+2. Persons Okay, good friend You share joy and sorrow (好好朋友就是能和你分享快乐和忧伤的人)
+3. I'm grateful to you He helped me Get along with your classmates(我很感激你的建议他帮了我与同学融洽相处)
+4. This is him, for the first time E-mail and comparison(这是他第一次用电子邮件与比交流)
+5. When we were at the pool by The time of play, the naughty Boy, deliberately push me down Who's there (当我们在游泳池边玩的时候那淘气的男孩故意把我推倒到了谁里)
+6. A hobby, yes. No, you I'm tired of talking about input Reading The longer the time, the more fun(爱好是不会让你感到厌倦的说投入的时间越长乐趣阅读)
+
 
 -- SPEED TEST --
 
