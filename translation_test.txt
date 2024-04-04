@@ -1,20 +1,49 @@
 -- WHEN USING TEXT INPUT --
 (no buffer)
-Parents were worried about what to eat for their children after the Sande's toxic milk powder incident 
-A good friend is someone who can share happiness and sorrow with you 
-I appreciate your advice. It helped me get along 
+Parents were worried about what to eat for their children after the Sande's toxic milk powder incident
+Parents were worried about what to feed their children after the Sanlu's toxic milk powder incident exposed 17.6%
+A good friend is someone who can share happiness and sorrow with you
+A good friend is someone who can share happiness and sorrow with you 0%
+I appreciate your advice. It helped me get along
+I appreciate your advice. It helped me get along with my classmates 25%
 This is his first e-mail conversation with a pen friend 
+This is his first e-mail conversation with a pen friend 0%
 When we were playing by the pool, that naughty boy deliberately pushed me into the water
+When we were playing by the pool, that naughty boy deliberately pushed me into the water 0%
 Love doesn't bore you. The longer you spend, the more fun you get 
+Hobby doesn't bore you. The longer you spend, the more fun you get 15.3%
+
+AVG = 9.7%
 
 --- WHEN USING SPEECH INPUT (speech -> transcription -> translator) ---
 (10 word buffer)
-1. In the mountains, after the story of the powder came to light, the doorman of the parents What to eat and worry about (在山路有来奶粉事件曝光后家长门卫该给孩子吃什么而忧虑)
+1. In the mountains, after the story of the powder came to light, the doorman of the parents What to eat and worry about (在山路有来奶粉事件曝光后家长门卫该给孩子吃什么而忧虑)  //This should be redone
+After Sanlu's toxic milk powder came to light, the parents worry about What to feed their children(在三鹿有毒奶粉事件曝光后家长们为该给孩子吃什么而忧虑)
+HTER for transcription = 19.2%
+HTER for translation = 41.2%
 2. Good friends are those who share with you joy and sorrow (好好朋友就是和你分享快乐和忧伤的人)
+Good friends are those who share with you joy and sorrow(好朋友就是能和你分享快乐和忧伤的人)
+HTER for transcription = 11.8%
+HTER for translation = 0
 3. I am pleased to thank you for your advice. He helped me Get along with your classmates(我很高兴感激你的建议他帮助了我与同学融洽相处)
+I really thank you for your advice. It helped me Get along with my classmates(我很感激你的建议他帮助了我与同学们融洽相处)
+HTER for transcription = 19%
+HTER for translation = 20%
 4. This is the first time he has spoken with a pen friend by e-mail (这是他第一次用电子邮件与笔友交流)
+This is the first time he has spoken with a pen friend by e-mail(这是他第一次用电子邮件与笔友交流)
+HTER for transcription = 0
+HTER for translation = 0
 5. When we played by the pool The naughty boy deliberately pushed me down into the water (的我们在游泳池边玩的时候淘气的男孩故意把我推倒了水里)
+When we played by the pool The naughty boy deliberately pushed me into the water (当我们在游泳池边玩的时候那个淘气的男孩故意把我推到了水里)
+HTER for transcription = 14.3%
+HTER for translation = 6.7%
 6. A hobby is not to make you tired of your input The longer the time, the fun, the reading(爱好是不会让你感到厌倦的你投入的时间越长乐趣阅读)
+A hobby will not make you bored, The longer you invest the time, the more fun you get(爱好是不会让你感到厌倦的你投入的时间越长乐趣越多)
+HTER for transcription = 8.3%
+HTER for translation = 27.8%
+
+AVG HTER for transcription = 
+AVG HTER for translation = 
 
 -- SPEED TEST --
 
