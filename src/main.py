@@ -5,6 +5,41 @@ from translation import Translator
 from display import OLEDDisplay
 from button import ButtonHandler, PowerButtonHandler
 
+
+vosk_to_libre_lang_codes = {
+    "en" : "en",
+    "cn" : "zh", 
+    "ru" : "ru", 
+    "fr" : "fr", 
+    "de" : "de", 
+    "es" : "es", 
+    "pt" : "pt", 
+    "gr" : "el", 
+    "tr" : "tr", 
+    "vn" : "vi", 
+    "it" : "it", 
+    "nl" : "nl",
+    "ar" : "ar",
+    "ca" : "ca",
+    "fa" : "fa",
+    "ph" : "tl",
+    "uk" : "uk",
+    "sv" : "sv",
+    "jp" : "ja",
+    "eo" : "eo",
+    "hi" : "hi",
+    "cs" : "cs",
+    "po" : "pl",
+    "ko" : "ko"
+}
+
+def vosk_code_to_libre(lang_code):
+    if lang_code in vosk_to_libre_lang_codes.keys():
+        return vosk_to_libre_lang_codes.get(lang_code)
+    else
+        print("Incorrect from language code")
+        exit()
+
 def transcribe(language, display):
     transcriber = Transcriber(language=language, display=display)
     transcriber.run()
