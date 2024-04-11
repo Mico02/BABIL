@@ -55,7 +55,6 @@ from_translation_languages = {"en" : "English",
                             "hi" : "Hindi",
                             "cs" : "Czech",
                             "po" : "Polish",
-                            "uz" : "Uzbek",
                             "ko" : "Korean"}
 
 to_translation_languages = {"en" : "English",
