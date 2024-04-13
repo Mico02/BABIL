@@ -11,8 +11,8 @@ class ButtonHandler:
     RIGHT = 2  
     SELECT = 3 
 
-    _BCM_PINS = [5, 6, 13]   #BCM GPIO pin connections for the buttons
-    _PHY_PINS = [29, 31, 33] #Physical GPIO pin connections for the buttons
+    _BCM_PINS = [6,13,5]   #BCM GPIO pin connections for the buttons
+    _PHY_PINS = [31,33,29] #Physical GPIO pin connections for the buttons
     def __init__(self, power_button=True):
         '''
         Initializes Button Handler 
