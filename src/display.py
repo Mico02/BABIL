@@ -42,8 +42,9 @@ class OLEDDisplay:
         '''
         self.__image = Image.new('1',(self.__display.width, self.__display.height), "WHITE")
         self.__draw = ImageDraw.Draw(self.__image)
-        self.__draw.text((40,20), word, font=self.__font, fill=0)
-        self.__image = self.__image.rotate(180)
+        self.__draw.text((40,40), word, font=self.__font, fill=0)
+        self.__image = self.__image.rotate(90)
+        self.__image = self.__image.transpose(Image.FLIP_TOP_BOTTOM)
         self.__display.ShowImage(self.__display.getbuffer(self.__image))
 
     def displayWords(self, words):

@@ -12,20 +12,29 @@ class Translator():
         
         #Starting local translation API 
         self.__process = subprocess.Popen(["libretranslate"])
-        time.sleep(5)
+        time.sleep(8)
         #Initializing translator API
         self.__translator = LibreTranslateAPI("http://127.0.0.1:5000")
 
         #initialize display
-        self.__display = OLEDDisplay(font_size = 15)
+        self.__display = OLEDDisplay(font_size = 10)
 
 
     def run(self, words, threadFlag):
+        
         phrase = ' '.join(words)
         if len(phrase) > 0:
-            translated = self.__translator.translate(q=phrase,source=self.__from_code, target=self.__to_code)
+            translated = self.__translator.translate(q=phrase,source='zh', target=self.__to_code)
             self.__display.displayWords(translated.split(" "))
+            print(translated)
         threadFlag[0] = False
         exit()
+
+    def runTest(self, phrase):
+        f = open("translation_test.txt","a")
+        translated = self.__translator.translate(q=phrase,source=self.__from_code, target=self.__to_code)
+        f.write(translated + " ")
+        f.close()
+
     def __del__(self):
         self.__process.terminate()

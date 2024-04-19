@@ -36,7 +36,7 @@ vosk_to_libre_lang_codes = {
 def vosk_code_to_libre(lang_code):
     if lang_code in vosk_to_libre_lang_codes.keys():
         return vosk_to_libre_lang_codes.get(lang_code)
-    else
+    else:
         print("Incorrect from language code")
         exit()
 
