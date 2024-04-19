@@ -147,7 +147,7 @@ buttons = ButtonHandler()
 powerButtonThread = threading.Thread(target=powerButton.wait_for_press)
 powerButtonThread.start()
 
-display = OLEDDisplay(font_size=15)
+display = OLEDDisplay(font_size=10)
 
 mode = select_device_mode(buttons,display)
 print(f"{mode} is the selected mode")
