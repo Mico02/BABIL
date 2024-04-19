@@ -33,10 +33,14 @@ vosk_to_libre_lang_codes = {
     "ko" : "ko"
 }
 
+lang_buffer_size = {
+    "zn" : 10
+}
+
 def vosk_code_to_libre(lang_code):
     if lang_code in vosk_to_libre_lang_codes.keys():
         return vosk_to_libre_lang_codes.get(lang_code)
-    else
+    else:
         print("Incorrect from language code")
         exit()
 
@@ -53,7 +57,11 @@ def transcribeTest(language, display):
 def translate(from_code, to_code, display):
     transcriber = Transcriber(language=from_code, display=display)
     translatator = Translator(from_code=from_code, to_code=to_code)
-    transcriber.runWithTranslation(translatator,5)
+    if to_code in lang_buffer_size.keys():
+        buffersize = lang_buffer_size.get(to_code)
+    else:
+        buffersize = 5
+    transcriber.runWithTranslation(translatator,buffersize)
     return
 def translateTest(from_code, to_code, display):
     transcriber = Transcriber(language=from_code, display=display)
