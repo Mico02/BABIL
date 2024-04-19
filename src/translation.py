@@ -24,7 +24,7 @@ class Translator():
         
         phrase = ' '.join(words)
         if len(phrase) > 0:
-            translated = self.__translator.translate(q=phrase,source='zh', target=self.__to_code)
+            translated = self.__translator.translate(q=phrase,source=sekf.__from_code, target=self.__to_code)
             self.__display.displayWords(translated.split(" "))
             print(translated)
         threadFlag[0] = False
