@@ -56,6 +56,10 @@ def transcribeTest(language, display):
 
 def translate(from_code, to_code, display):
     transcriber = Transcriber(language=from_code, display=display)
+    if from_code in vosk_to_libre_lang_codes.keys():
+        from_code = vosk_to_libre_lang_codes.get(from_code)
+    if to_code in vosk_to_libre_lang_codes.keys():
+        to_code = vosk_to_libre_lang_codes.get(to_code)
     translatator = Translator(from_code=from_code, to_code=to_code)
     if to_code in lang_buffer_size.keys():
         buffersize = lang_buffer_size.get(to_code)
